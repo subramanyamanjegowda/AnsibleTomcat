@@ -2,9 +2,8 @@
 # oracle-jdk8, tomcat8
 
 - hosts: tomcat
-  remote_user: root
-
+  remote_user: ansible
+  become: yes
   roles:
-    - oracle-jdk8
     - tomcat8
 

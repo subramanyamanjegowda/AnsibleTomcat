@@ -1,5 +1,8 @@
 ---
 
+- name: install jdk-1.8
+  yum: name=java-1.8.0-openjdk-devel state=present
+
 - name: Download tomcat
   get_url: url=http://archive.apache.org/dist/tomcat/tomcat-8/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz
            dest=/tmp/apache-tomcat-{{tomcat_version}}.tar.gz 
@@ -12,8 +15,6 @@
            dest=/opt/apache-tomcat-{{tomcat_version}}/{{item.dir}}/ 
   with_items:
     - { name: catalina-jmx-remote.jar  , dir: lib }
-    - { name: tomcat-juli-adapters.jar , dir: lib }
-    - { name: tomcat-juli.jar          , dir: bin }
 
 - name: Remove docs apps
   file: path=/opt/apache-tomcat-{{tomcat_version}}/webapps/docs state=absent
@@ -71,15 +72,6 @@
 
 - name: Start tomcat
   service: name=tomcat state=restarted enabled=yes
-
-- name: Add firewalld service file
-  template: src=firewalld/tomcat.xml dest=/usr/lib/firewalld/services/tomcat.xml owner=root group=root
-
-- name: Restart firewalld
-  service: name=firewalld state=restarted enabled=yes
-
-- name: Expose tomcat
-  shell: firewall-cmd --add-service=tomcat --zone=public --permanent
 
 - name: Wait for tomcat started
   wait_for: port={{http_port}}
