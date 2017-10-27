@@ -4,4 +4,4 @@ default_password: dbowner
 
 db_name: CRUDAPPDB
 
-app_hostname: {{hostvars['tomcat'].ansible_host }}
+app_hostname: "{{ hostvars['tomcat'].ansible_host }}"
