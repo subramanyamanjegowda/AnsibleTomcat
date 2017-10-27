@@ -2,8 +2,9 @@
 
 - name: Download Artifact from Maven Repo to Webservers 
   maven_artifact:
-    group_id: com.crudapp.main
-    artifact_id: CRUDAPP
-    extension: war
-    repository_url: 'http://10.10.0.60:8081/nexus/content/repositories/DEV-CRUDAPP'
-    dest: /opt/tomcat/webapps/crudapp.war
+    group_id: "{{ nexus_grp_id }}"
+    artifact_id: "{{ artifact_name }}"
+    extension: "{{ nexus_extentions }}"
+    repository_url: "{{ nexus_repo_url }}"
+    dest: "{{ artifact_destination }}"
+

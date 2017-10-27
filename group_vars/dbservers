@@ -1,6 +1,8 @@
 root_db_password: ZXcvb12___678
 
-default_password: dbowner
+db_password: GmiC___465
+
+db_user: dbowner
 
 db_name: CRUDAPPDB
 
