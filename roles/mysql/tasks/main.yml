@@ -30,7 +30,7 @@
 - name: Transfer the script
   copy: src=mysql_secure_installation.sh dest=/home/ansible mode=0777
 
-- name: This command will change the working directory to somedir/ and will only run when somedir/somelog.txt doesn't exist.
+- name: script to secure mysql installation with root_db_pass
   shell: /home/ansible/mysql_secure_installation.sh "{{ mysql_root_password_temp.stdout }}" '{{ root_db_password }}'
 
 - name: update mysql root password for all root accounts
@@ -41,3 +41,11 @@
     - ::1
     - localhost
 
+- name: copy over the db.sql script to create db for crudapp team
+  copy: src=db.sql dest=/tmp/db.sql
+
+- name: create the database
+  mysql_db: name=CRUDAPPDB state=present login_user=root login_password={{ root_db_password }}
+
+- name: execute the db.sql
+  mysql_db: name=CRUDAPPDB state=import target=/tmp/db.sql login_user=root login_password={{ root_db_password }}

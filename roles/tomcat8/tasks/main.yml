@@ -36,6 +36,7 @@
   with_items:
     - server.xml
     - tomcat-users.xml
+    - context.xml
 
 - name: Add tomcat configuration files
   copy: src=tomcat/conf/{{item}} dest=/opt/apache-tomcat-{{tomcat_version}}/conf/{{item}}

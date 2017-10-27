@@ -6,6 +6,7 @@
   become: yes
   roles:
     - tomcat8
+    - crud_deploy
 
 - hosts: dbservers
   remote_user: ansible

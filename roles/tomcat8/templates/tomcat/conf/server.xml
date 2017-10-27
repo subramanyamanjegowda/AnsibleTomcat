@@ -29,11 +29,11 @@
 	    rmiRegistryPortPlatform="{{jmx_registry_port}}" rmiServerPortPlatform="{{jmx_server_port}}" />
 
   <GlobalNamingResources>
-    <Resource name="UserDatabase" auth="Container"
+  <Resource name="UserDatabase" auth="Container"
               type="org.apache.catalina.UserDatabase"
               description="User database that can be updated and saved"
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
-              pathname="conf/tomcat-users.xml" />
+              pathname="conf/tomcat-users.xml" /> 
   </GlobalNamingResources>
 
   <Service name="Catalina">
