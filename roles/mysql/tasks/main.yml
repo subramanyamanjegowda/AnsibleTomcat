@@ -31,7 +31,7 @@
   copy: src=mysql_secure_installation.sh dest=/home/ansible mode=0777
 
 - name: script to secure mysql installation with root_db_pass
-  shell: /home/ansible/mysql_secure_installation.sh "{{ mysql_root_password_temp.stdout }}" '{{ root_db_password }}'
+  shell: /home/ansible/mysql_secure_installation.sh "{{ mysql_root_password_temp.stdout }}" "{{ root_db_password }}"
 
 - name: update mysql root password for all root accounts
   mysql_user: login_user=root login_password={{ root_db_password }} name={{ db_user }} host={{ item }} password={{ db_password }} priv='*.*:ALL,GRANT' state=present
