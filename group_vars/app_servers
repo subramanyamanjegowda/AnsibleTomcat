@@ -18,7 +18,6 @@ admin_password: admin
 db_admin_user: dbowner
 db_admin_password: ZXcvb12___678
 db_name: CRUDAPPDB
-db_host: 10.10.20.50
 
 min_heap_size: 512M
 max_heap_size: 512M

@@ -7,5 +7,5 @@
 		password="{{ db_admin_password }}"
 		driverClassName="com.mysql.jdbc.Driver"
 		description="Global Address Database"
-		url="jdbc:mysql://{{ db_host }}:3306/{{ db_name }}" maxActive="15" maxIdle="3"/>
+		url="jdbc:mysql://{{hostvars['mysql-1'].ansible_host }}:3306/{{ db_name }}" maxActive="15" maxIdle="3"/>
 </Context>
