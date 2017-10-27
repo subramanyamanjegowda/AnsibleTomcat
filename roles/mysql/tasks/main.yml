@@ -8,7 +8,7 @@
     gpgcheck: 0
 
 - name: Update the OS
-  command: yum -y update
+  yum: update_cache=yes name=* state=latest
 
 - name: Install MySQL Server
   yum: name=mysql-community-server state=present
@@ -36,7 +36,7 @@
 - name: update mysql root password for all root accounts
   mysql_user: login_user=root login_password={{ root_db_password }} name=dbowner host={{ item }} password={{ root_db_password }} priv='*.*:ALL,GRANT' state=present
   with_items:
-    - "{{hostvars['tomcat'].ansible_host }}"
+    - "{{ app_hostname }}"
     - 127.0.0.1
     - ::1
     - localhost
