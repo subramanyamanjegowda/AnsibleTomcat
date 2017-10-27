@@ -5,3 +5,5 @@ default_password: dbowner
 default_fqdn: 10.10.20.30
 
 ansible_hostname: 10.10.20.30
+
+db_name: CRUDAPPDB

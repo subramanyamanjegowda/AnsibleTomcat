@@ -45,7 +45,7 @@
   copy: src=db.sql dest=/tmp/db.sql
 
 - name: create the database
-  mysql_db: name=CRUDAPPDB state=present login_user=root login_password={{ root_db_password }}
+  mysql_db: name={{ db_name }} state=present login_user=root login_password={{ root_db_password }}
 
 - name: execute the db.sql
-  mysql_db: name=CRUDAPPDB state=import target=/tmp/db.sql login_user=root login_password={{ root_db_password }}
+  mysql_db: name={{ db_name }} state=import target=/tmp/db.sql login_user=root login_password={{ root_db_password }}
