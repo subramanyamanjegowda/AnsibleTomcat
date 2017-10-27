@@ -1,0 +1,43 @@
+---
+- name: Add the MySql Community Repo
+  yum_repository:
+    name: "mysql-community-server"
+    description: "Opensource MYSQLD for WEBAPP"
+    baseurl: http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
+    enabled: 1
+    gpgcheck: 0
+
+- name: Update the OS
+  command: yum -y update
+
+- name: Install MySQL Server
+  yum: name=mysql-community-server state=present
+
+- name: Install MySQL-python, this is required for the task remove anonymous user
+  yum: name=MySQL-python state=present
+
+- name: Install expect for mysql_insecure_install shell script
+  yum: name=expect state=present
+
+- name: Start MySQL Server and enable it
+  service: name=mysqld state=started enabled=yes
+
+- name: Find temporary password
+  shell: "echo `grep 'temporary.*root@localhost' /var/log/mysqld.log | sed 's/.*root@localhost: //'`"
+  register: mysql_root_password_temp
+  tags: register
+
+- name: Transfer the script
+  copy: src=mysql_secure_installation.sh dest=/home/ansible mode=0777
+
+- name: This command will change the working directory to somedir/ and will only run when somedir/somelog.txt doesn't exist.
+  shell: /home/ansible/mysql_secure_installation.sh "{{ mysql_root_password_temp.stdout }}" '{{ root_db_password }}'
+
+- name: update mysql root password for all root accounts
+  mysql_user: login_user=root login_password={{ root_db_password }} name=dbowner host={{ item }} password={{ root_db_password }} priv='*.*:ALL,GRANT' state=present
+  with_items:
+    - "{{hostvars['tomcat'].ansible_host }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+

@@ -1,9 +1,15 @@
 ---
 # oracle-jdk8, tomcat8
 
-- hosts: tomcat
+- hosts: app_servers
   remote_user: ansible
   become: yes
   roles:
     - tomcat8
+
+- hosts: dbservers
+  remote_user: ansible
+  become: yes
+  roles:
+    - mysql
 
