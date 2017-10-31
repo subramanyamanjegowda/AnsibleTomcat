@@ -1,4 +1,14 @@
 ---
+
+- name: command to install epel-release
+  command: yum -y install epel-release
+
+- name: Install python-pip for pexpect 3.3 above
+  yum: name=python-pip state=latest
+
+- name: Install pexpect using pip
+  pip: name=pexpect
+
 - name: Add the MySql Community Repo
   yum_repository:
     name: "mysql-community-server"
@@ -9,15 +19,14 @@
 
 - name: Update the OS
   yum: update_cache=yes name=* state=latest
+  tags:
+    - update
 
 - name: Install MySQL Server
   yum: name=mysql-community-server state=present
 
 - name: Install MySQL-python, this is required for the task remove anonymous user
   yum: name=MySQL-python state=present
-
-- name: Install expect for mysql_insecure_install shell script
-  yum: name=expect state=present
 
 - name: Start MySQL Server and enable it
   service: name=mysqld state=started enabled=yes
@@ -27,11 +36,27 @@
   register: mysql_root_password_temp
   tags: register
 
-- name: Transfer the script
-  copy: src=mysql_secure_installation.sh dest=/home/ansible mode=0777
+- debug: msg="{{mysql_root_password_temp.stdout}}"
+  tags: register
 
-- name: script to secure mysql installation with root_db_pass
-  shell: /home/ansible/mysql_secure_installation.sh "{{ mysql_root_password_temp.stdout }}" "{{ root_db_password }}"
+#- name: Transfer the script
+#  copy: src=mysql_secure_installation.sh dest=/home/ansible mode=0777
+
+- name: Spawn Expect for mysql_secure_installation responses
+  expect:
+    command: mysql_secure_installation
+    responses:
+      'Enter password for user root': '{{mysql_root_password_temp.stdout}}'
+      'New password': '{{ root_db_password }}'
+      'Re-enter new password': '{{ root_db_password }}'
+      'Change the password for root': 'n'
+      'Remove anonymous users': 'y'
+      'Disallow root login remotely': 'y'
+      'Remove test database and access to it': 'y'
+      'Reload privilege tables now': 'y'
+    echo: yes
+  tags:
+    - expect
 
 - name: update mysql root password for all root accounts
   mysql_user: login_user=root login_password={{ root_db_password }} name={{ db_user }} host={{ item }} password={{ db_password }} priv='*.*:ALL,GRANT' state=present
