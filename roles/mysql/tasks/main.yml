@@ -1,8 +1,10 @@
 ---
 
 - name: command to install epel-release
-  command: yum -y install epel-release
-
+  yum_repository:
+     name: epel
+     state: present
+     baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 - name: Install python-pip for pexpect 3.3 above
   yum: name=python-pip state=latest
 

@@ -1,5 +1,6 @@
 ---
-- name: Install mysql-connector-java
+
+- name: wq1Install mysql-connector-java
   yum: name=mysql-connector-java state=present
 
 - name: install jdk-1.8
@@ -68,7 +69,7 @@
   file: src=/opt/apache-tomcat-{{tomcat_version}} owner=tomcat group=tomcat path=/opt/tomcat state=link
 
 - name: Add tomcat systemd unit file
-  copy: src=systemd/tomcat.service dest=/usr/lib/systemd/system/tomcat.service owner=root group=root
+  copy: src=systemd/tomcat.service dest=/etc/systemd/system/tomcat.service owner=root group=root
 
 - name: systemd daemon-reload
   shell: systemctl daemon-reload

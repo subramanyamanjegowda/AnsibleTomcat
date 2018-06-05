@@ -16,15 +16,15 @@ ipv6_disable: True
 jmx_registry_port: 10080
 jmx_server_port: 10081
 
-##### Database Details #####
 
+####tomcat########
 admin_username: admin
 admin_password: admin
-
+##DB######
 db_admin_user: dbowner
 db_admin_password: GmiC___465
 db_name: CRUDAPPDB
-db_host: "{{ hostvars['mysql-1'].ansible_host }}"
+db_host: tomcatsql.ct1ow8vctbcz.us-east-1.rds.amazonaws.com
 
 ##### Tomcat Heap Parameters ####
 
